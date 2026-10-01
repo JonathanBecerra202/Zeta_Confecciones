@@ -1,0 +1,57 @@
+<div class="orgs-page">
+  <div class="page-header">
+    <h1>Organizaciones</h1>
+    <span class="result-count">{{ filtered().length }} resultado{{ filtered().length !== 1 ? 's' : '' }}</span>
+  </div>
+
+  @if (errorMsg()) {
+    <p class="error-banner">{{ errorMsg() }}</p>
+  }
+
+  <div class="search-box">
+    <input class="zeta-input" placeholder="Buscar por nombre…"
+      [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" />
+  </div>
+
+  @if (roleService.isAdmin()) {
+    <div class="toolbar-row">
+      <span></span>
+      <button class="btn-primary" (click)="openNew()">+ Nueva organización</button>
+    </div>
+  }
+
+  @if (loading()) {
+    <p class="loading-text">Cargando organizaciones…</p>
+  } @else {
+    <div class="org-list">
+      @for (o of filtered(); track o.organization_id) {
+        <div class="org-card">
+          <div class="org-info">
+            <span class="org-name">{{ o.name }}</span>
+            <span class="org-meta">{{ depCount(o.organization_id) }} dependencia{{ depCount(o.organization_id) !== 1 ? 's' : '' }}</span>
+          </div>
+          @if (roleService.isAdmin()) {
+            <div class="org-actions">
+              <button class="link-btn" (click)="openEdit(o)">Editar</button>
+              <button class="link-btn danger" (click)="deleteOrg(o)">Eliminar</button>
+            </div>
+          }
+        </div>
+      }
+
+      @if (filtered().length === 0) {
+        <div class="empty-state">
+          <p>No se encontraron organizaciones</p>
+        </div>
+      }
+    </div>
+  }
+</div>
+
+@if (showForm()) {
+  <app-organizacion-form
+    [initial]="editingOrg()"
+    (close)="closeForm()"
+    (saved)="onSaved()"
+  />
+}

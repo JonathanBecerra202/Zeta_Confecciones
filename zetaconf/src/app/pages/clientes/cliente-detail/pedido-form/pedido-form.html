@@ -1,0 +1,77 @@
+<div class="modal-overlay" (click)="close.emit()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ initial ? 'Editar pedido' : 'Nuevo pedido' }}</h2>
+      <button class="close-btn" (click)="close.emit()">✕</button>
+    </div>
+
+    @if (errorMsg()) {
+      <p class="error-banner">{{ errorMsg() }}</p>
+    }
+
+    <label class="zeta-label">Descripción de la prenda *</label>
+    <input class="zeta-input" [ngModel]="description()" (ngModelChange)="description.set($event)" />
+
+    <div class="field-grid">
+      <div>
+        <label class="zeta-label">Cantidad</label>
+        <input class="zeta-input" type="number" min="1" [ngModel]="quantity()" (ngModelChange)="quantity.set($event)" />
+      </div>
+      <div>
+        <label class="zeta-label">Precio unitario *</label>
+        <div class="currency-input">
+          <span class="currency-prefix">$</span>
+          <input class="zeta-input currency" type="text" inputmode="numeric" [disabled]="priceLocked"
+            [ngModel]="unitPriceDisplay()" (ngModelChange)="onUnitPriceInput($event)" placeholder="0" />
+        </div>
+        @if (priceLocked) {
+          <p class="price-locked-note">Solo un Admin puede modificar el precio de un pedido ya creado</p>
+        }
+      </div>
+    </div>
+
+    <div class="field-grid">
+      <div>
+        <label class="zeta-label">Fecha de entrega</label>
+        <input class="zeta-input" type="date" [min]="minDeliveryDate" [ngModel]="deliveryDate()" (ngModelChange)="deliveryDate.set($event)" />
+      </div>
+      @if (initial) {
+        <div>
+          <label class="zeta-label">Estado del pedido</label>
+          <select class="zeta-select" [ngModel]="status()" (ngModelChange)="status.set($event)">
+            @for (s of statusOptions; track s) {
+              <option [ngValue]="s">{{ statusLabels[s] }}</option>
+            }
+          </select>
+        </div>
+      }
+    </div>
+
+    <div class="field-full">
+      <label class="zeta-label">Medida a usar</label>
+      <select class="zeta-select" [ngModel]="measurementId()" (ngModelChange)="measurementId.set($event)">
+        <option [ngValue]="null">Sin especificar</option>
+        @for (m of measurements; track m.measurement_id) {
+          <option [ngValue]="m.measurement_id">{{ m.taken_at | date:'d MMM yyyy' }}</option>
+        }
+      </select>
+    </div>
+
+    <label class="checkbox-label">
+      <input type="checkbox" [ngModel]="embroidery()" (ngModelChange)="embroidery.set($event)" />
+      Lleva bordado
+    </label>
+
+    <div class="field-full">
+      <label class="zeta-label">Observaciones</label>
+      <textarea class="zeta-input" rows="2" [ngModel]="notes()" (ngModelChange)="notes.set($event)"></textarea>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-secondary" (click)="close.emit()">Cancelar</button>
+      <button class="btn-primary" (click)="onSubmit()" [disabled]="saving()">
+        {{ saving() ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </div>
+</div>

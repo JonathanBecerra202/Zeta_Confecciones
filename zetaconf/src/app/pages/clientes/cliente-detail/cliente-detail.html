@@ -1,0 +1,164 @@
+<div class="modal-overlay" (click)="close.emit()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ fullName() }}</h2>
+      <div class="header-actions">
+        <button class="icon-btn" (click)="edit.emit()" title="Editar cliente">✏️</button>
+        <button class="close-btn" (click)="close.emit()">✕</button>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-line">
+        <span class="info-label">Estado</span>
+        <span class="badge" [class.badge-active]="client.active" [class.badge-inactive]="!client.active">
+          ● {{ client.active ? 'Activo' : 'Inactivo' }}
+        </span>
+      </div>
+      <div class="info-line">
+        <span class="info-label">Teléfono</span>
+        <span>{{ client.phone || 'Sin registrar' }}</span>
+      </div>
+      <div class="info-line">
+        <span class="info-label">Organización</span>
+        <span>{{ organization?.name || 'Ninguna' }}</span>
+      </div>
+      <div class="info-line">
+        <span class="info-label">Dependencia</span>
+        <span>{{ department?.name || 'Ninguna' }}</span>
+      </div>
+      <div class="info-line">
+        <span class="info-label">Registrado</span>
+        <span>{{ client.registered_at | date:'d \'de\' MMMM \'de\' y' }}</span>
+      </div>
+    </div>
+
+    @if (loading()) {
+      <p class="muted">Cargando…</p>
+    } @else {
+      <!-- MEDIDAS -->
+      <div class="section-header">
+        <h3>📏 Medidas</h3>
+        <button class="link-btn" (click)="showMeasurementForm.set(true)">+ Nueva toma</button>
+      </div>
+
+      @if (latestMeasurement(); as m) {
+        <div class="measure-grid">
+          <div class="measure-item"><span>Ancho espalda</span><strong>{{ m.back_width_ae ?? '—' }} cm</strong></div>
+          <div class="measure-item"><span>Contorno busto</span><strong>{{ m.bust_circumference_cb ?? '—' }} cm</strong></div>
+          <div class="measure-item"><span>Contorno cintura</span><strong>{{ m.waist_circumference_cc ?? '—' }} cm</strong></div>
+          <div class="measure-item"><span>Contorno cadera</span><strong>{{ m.hip_circumference_ck ?? '—' }} cm</strong></div>
+          <div class="measure-item"><span>Largo talle</span><strong>{{ m.torso_length_lt ?? '—' }} cm</strong></div>
+          <div class="measure-item"><span>Largo pantalón</span><strong>{{ m.pants_length_lp ?? '—' }} cm</strong></div>
+          <div class="measure-item"><span>Largo manga</span><strong>{{ m.sleeve_length_lm ?? '—' }} cm</strong></div>
+          <div class="measure-item"><span>Contorno manga</span><strong>{{ m.sleeve_circumference_cm ?? '—' }} cm</strong></div>
+          <div class="measure-item"><span>Contorno pierna</span><strong>{{ m.leg_circumference_cp ?? '—' }} cm</strong></div>
+        </div>
+        @if (m.notes) {
+          <p class="measure-notes">Observaciones: {{ m.notes }}</p>
+        }
+        <p class="measure-date">Última toma: {{ m.taken_at | date:'d \'de\' MMMM \'de\' y' }}</p>
+      } @else {
+        <p class="muted">Sin medidas registradas</p>
+      }
+
+      @if (measurements().length > 1) {
+        <button class="toggle-btn" (click)="showMeasurementHistory.set(!showMeasurementHistory())">
+          {{ showMeasurementHistory() ? '▲ Ocultar historial' : '▼ Ver historial de medidas (' + (measurements().length - 1) + ')' }}
+        </button>
+
+        @if (showMeasurementHistory()) {
+          <div class="history-list">
+            @for (m of measurements().slice(1); track m.measurement_id) {
+              <div class="history-item">
+                <div class="history-date">{{ m.taken_at | date:'d \'de\' MMMM \'de\' y' }}</div>
+                <div class="measure-grid">
+                  <div class="measure-item"><span>Ancho espalda</span><strong>{{ m.back_width_ae ?? '—' }} cm</strong></div>
+                  <div class="measure-item"><span>Contorno busto</span><strong>{{ m.bust_circumference_cb ?? '—' }} cm</strong></div>
+                  <div class="measure-item"><span>Contorno cintura</span><strong>{{ m.waist_circumference_cc ?? '—' }} cm</strong></div>
+                  <div class="measure-item"><span>Contorno cadera</span><strong>{{ m.hip_circumference_ck ?? '—' }} cm</strong></div>
+                  <div class="measure-item"><span>Largo talle</span><strong>{{ m.torso_length_lt ?? '—' }} cm</strong></div>
+                  <div class="measure-item"><span>Largo pantalón</span><strong>{{ m.pants_length_lp ?? '—' }} cm</strong></div>
+                  <div class="measure-item"><span>Largo manga</span><strong>{{ m.sleeve_length_lm ?? '—' }} cm</strong></div>
+                  <div class="measure-item"><span>Contorno manga</span><strong>{{ m.sleeve_circumference_cm ?? '—' }} cm</strong></div>
+                  <div class="measure-item"><span>Contorno pierna</span><strong>{{ m.leg_circumference_cp ?? '—' }} cm</strong></div>
+                </div>
+                @if (m.notes) {
+                  <p class="measure-notes">Observaciones: {{ m.notes }}</p>
+                }
+              </div>
+            }
+          </div>
+        }
+      }
+
+      <!-- SALDO / PEDIDOS -->
+      <div class="section-header">
+        <h3>💰 Saldo</h3>
+        <button class="link-btn" (click)="openNewOrder()">+ Nuevo pedido</button>
+      </div>
+
+      <div class="saldo-total">
+        Saldo pendiente total: <strong>{{ pendingTotal() | number:'1.0-0' }}</strong>
+      </div>
+
+      @if (orders().length === 0) {
+        <p class="muted">Sin pedidos registrados</p>
+      } @else {
+        <div class="order-list">
+          @for (o of orders(); track o.garment_order_id) {
+            <div class="order-item">
+              <div class="order-top">
+                <span class="order-desc">{{ o.description }}</span>
+              </div>
+
+              <div class="status-row">
+                <span class="status-group">
+                  <span class="status-caption">Estado del pedido</span>
+                  <span class="badge" [class]="'badge-status-' + o.status">{{ statusLabels[o.status] }}</span>
+                </span>
+                <span class="status-group">
+                  <span class="status-caption">Estado del pago</span>
+                  <span class="badge" [class]="'badge-payment-' + o.payment_status">{{ paymentStatusLabels[o.payment_status] }}</span>
+                </span>
+              </div>
+
+              <div class="order-numbers">
+                <span>Total <strong>{{ o.total_price | number:'1.0-0' }}</strong></span>
+                <span>Pagado <strong>{{ o.amount_paid | number:'1.0-0' }}</strong></span>
+                <span>Pendiente <strong>{{ saldoOf(o) | number:'1.0-0' }}</strong></span>
+              </div>
+              @if (o.embroidery) {
+                <div class="order-embroidery">✦ Con bordado</div>
+              }
+              @if (o.delivery_date) {
+                <div class="order-delivery">Entrega: {{ o.delivery_date | date:'d \'de\' MMMM \'de\' y' }}</div>
+              }
+              <div class="order-actions">
+                <button class="link-btn" (click)="openEditOrder(o)">Editar</button>
+                <button class="link-btn danger" (click)="deleteOrder(o)">Eliminar</button>
+              </div>
+              <app-order-payments [order]="o" (changed)="loadAll()" />
+            </div>
+          }
+        </div>
+      }
+    }
+
+    <div class="modal-actions">
+      <button class="btn-secondary" (click)="toggleActive()" [disabled]="togglingActive()">
+        {{ client.active ? 'Desactivar cliente' : 'Reactivar cliente' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+@if (showMeasurementForm()) {
+  <app-medida-form [clientId]="client.client_id" (close)="showMeasurementForm.set(false)" (saved)="onMeasurementSaved()" />
+}
+
+@if (showOrderForm()) {
+  <app-pedido-form [clientId]="client.client_id" [measurements]="measurements()" [initial]="editingOrder()"
+    [isAdmin]="roleService.isAdmin()"
+    (close)="showOrderForm.set(false); editingOrder.set(null)" (saved)="onOrderSaved()" />
+}

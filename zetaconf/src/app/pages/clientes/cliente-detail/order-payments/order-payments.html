@@ -1,0 +1,50 @@
+<div class="payments-block">
+  <button class="toggle-btn" (click)="toggle()">
+    {{ expanded() ? '▲ Ocultar abonos' : '▼ Ver abonos' }}
+  </button>
+
+  @if (expanded()) {
+    @if (loading()) {
+      <p class="muted">Cargando abonos…</p>
+    } @else {
+      @if (payments().length === 0) {
+        <p class="muted">Sin abonos registrados</p>
+      } @else {
+        <div class="payment-list">
+          @for (p of payments(); track p.payment_id) {
+            <div class="payment-item">
+              <span>{{ p.amount | number:'1.0-0' }}</span>
+              <span class="muted">{{ p.note }}</span>
+              <span class="muted">{{ p.paid_at | date:'d MMM yyyy' }}</span>
+            </div>
+          }
+        </div>
+      }
+
+      @if (saldo() > 0) {
+        <div class="payment-add">
+          @if (errorMsg()) {
+            <p class="error-inline">{{ errorMsg() }}</p>
+          }
+<div>
+  <label class="zeta-label">Monto *</label>
+            <div class="currency-input">
+              <span class="currency-prefix">$</span>
+              <input class="zeta-input currency" type="text" inputmode="numeric"
+                [placeholder]="'Máx. ' + (saldo() | number:'1.0-0')"
+                [ngModel]="newAmountDisplay()" (ngModelChange)="onAmountInput($event)" />
+            </div>
+          </div>
+          <div>
+            <label class="zeta-label">Observación</label>
+            <input class="zeta-input" [ngModel]="newNote()" (ngModelChange)="newNote.set($event)" />
+          </div>
+
+          <button class="btn-primary" (click)="addPayment()" [disabled]="saving()">
+            {{ saving() ? '...' : 'Registrar' }}
+          </button>
+        </div>
+      }
+    }
+  }
+</div>

@@ -1,0 +1,80 @@
+<div class="dashboard-page">
+  <h1>Bienvenida, Zeta ✂️</h1>
+  <p class="subtitle">Resumen general del taller</p>
+
+  @if (errorMsg()) {
+    <p class="error-banner">{{ errorMsg() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="loading-text">Cargando resumen…</p>
+  } @else {
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">{{ activeClients() }}</div>
+        <div class="stat-label">Clientes activos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ pendingOrders().length }}</div>
+        <div class="stat-label">Pedidos pendientes/en proceso</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ overdueOrders().length }}</div>
+        <div class="stat-label">Pedidos vencidos</div>
+      </div>
+      <div class="stat-card wide">
+        <div class="stat-value">{{ totalPendingBalance() | number:'1.0-0' }}</div>
+        <div class="stat-label">Saldo pendiente total ({{ ordersWithBalance().length }} pedido{{ ordersWithBalance().length !== 1 ? 's' : '' }})</div>
+      </div>
+    </div>
+
+    @if (overdueOrders().length > 0) {
+      <h2 class="section-title attention">⚠ Requieren atención — entrega vencida</h2>
+      <div class="order-list">
+        @for (o of overdueOrders(); track o.garment_order_id) {
+          <div class="order-row">
+            <div class="order-info">
+              <span class="order-client">{{ clientName(o.client_id) }}</span>
+              <span class="order-desc">{{ o.description }}</span>
+            </div>
+            <span class="order-date overdue">{{ o.delivery_date | date:'d MMM' }}</span>
+          </div>
+        }
+      </div>
+    }
+
+    <h2 class="section-title">Próximas entregas</h2>
+    @if (upcomingDeliveries().length === 0) {
+      <p class="muted">No hay entregas próximas registradas</p>
+    } @else {
+      <div class="order-list">
+        @for (o of upcomingDeliveries(); track o.garment_order_id) {
+          <div class="order-row">
+            <div class="order-info">
+              <span class="order-client">{{ clientName(o.client_id) }}</span>
+              <span class="order-desc">{{ o.description }}</span>
+            </div>
+            <span class="order-date">{{ o.delivery_date | date:'d MMM' }}</span>
+          </div>
+        }
+      </div>
+    }
+
+    <h2 class="section-title">Con saldo pendiente</h2>
+    @if (ordersWithBalance().length === 0) {
+      <p class="muted">No hay saldos pendientes</p>
+    } @else {
+      <div class="order-list">
+        @for (o of ordersWithBalance().slice(0, 5); track o.garment_order_id) {
+          <div class="order-row">
+            <div class="order-info">
+              <span class="order-client">{{ clientName(o.client_id) }}</span>
+              <span class="order-desc">{{ o.description }}</span>
+            </div>
+            <span class="order-balance">{{ saldoOf(o) | number:'1.0-0' }}</span>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

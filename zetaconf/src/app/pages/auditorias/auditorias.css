@@ -1,0 +1,16 @@
+.audit-page { font-family: 'Nunito', sans-serif; }
+.page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+.page-header h1 { color: #26425e; font-family: 'Playfair Display', serif; font-size: 1.3rem; margin: 0; }
+.result-count { color: #8fa8bc; font-size: 0.8rem; }
+.error-banner { background: #fce8ef; color: #c0335a; border-radius: 8px; padding: 0.6rem 0.85rem; font-size: 0.85rem; margin-bottom: 0.75rem; }
+.loading-text { color: #8fa8bc; text-align: center; padding: 2rem; }
+.audit-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.audit-card { background: #eaf6fd; border: 1.5px solid #bfe0f2; border-radius: 12px; padding: 0.6rem 0.85rem; }
+.audit-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem; }
+.audit-table { color: #26425e; font-weight: 700; font-size: 0.85rem; text-transform: capitalize; }
+.audit-meta { color: #8fa8bc; font-size: 0.75rem; }
+.badge { border-radius: 999px; font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.6rem; text-transform: uppercase; }
+.badge-INSERT { background: #d4f4e2; color: #1a7a45; }
+.badge-UPDATE { background: #dde8ff; color: #2d4db5; }
+.badge-DELETE { background: #fce8ef; color: #c0335a; }
+.empty-state { text-align: center; padding: 2.5rem; color: #8fa8bc; }

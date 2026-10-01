@@ -1,0 +1,25 @@
+<div class="app-shell">
+  <header class="app-header">
+    <div class="header-inner">
+      <span class="logo">Zeta <span class="logo-accent">Confecciones</span></span>
+
+      <nav class="nav-tabs">
+        @for (tab of tabs(); track tab.path) {
+          <a class="nav-tab" [routerLink]="tab.path" routerLinkActive="active">{{ tab.label }}</a>
+        }
+      </nav>
+
+      <div class="user-box">
+        @if (profile()) {
+          <span class="user-name">{{ profile()!.full_name }}</span>
+          <span class="user-role">{{ profile()!.role_name === 'Admin' ? 'Admin' : 'Empleado' }}</span>
+        }
+        <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <router-outlet />
+  </main>
+</div>

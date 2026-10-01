@@ -1,0 +1,21 @@
+.orgs-page { font-family: 'Nunito', sans-serif; }
+.page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+.page-header h1 { color: #26425e; font-family: 'Playfair Display', serif; font-size: 1.3rem; margin: 0; }
+.result-count { color: #8fa8bc; font-size: 0.8rem; }
+.error-banner { background: #fce8ef; color: #c0335a; border-radius: 8px; padding: 0.6rem 0.85rem; font-size: 0.85rem; margin-bottom: 0.75rem; }
+.search-box { margin-bottom: 0.5rem; }
+.zeta-input { background: #fff; border: 1.5px solid #bfe0f2; border-radius: 10px; padding: 0.42rem 0.85rem; font-family: 'Nunito', sans-serif; font-size: 0.875rem; color: #4a5a68; width: 100%; outline: none; box-sizing: border-box; }
+.zeta-input:focus { border-color: #6bb3de; box-shadow: 0 0 0 3px rgba(107,179,222,0.15); }
+.toolbar-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+.btn-primary { background: #6bb3de; color: #fff; border: none; border-radius: 999px; font-weight: 700; font-size: 0.82rem; padding: 0.38rem 1rem; cursor: pointer; }
+.btn-primary:hover { background: #4f9fd8; }
+.loading-text { color: #8fa8bc; text-align: center; padding: 2rem; }
+.org-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.org-card { background: #eaf6fd; border: 1.5px solid #bfe0f2; border-radius: 14px; padding: 0.7rem 0.9rem; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; }
+.org-info { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.org-name { color: #26425e; font-weight: 700; font-size: 0.9rem; }
+.org-meta { color: #8fa8bc; font-size: 0.75rem; }
+.org-actions { display: flex; gap: 0.7rem; flex-shrink: 0; }
+.link-btn { background: none; border: none; color: #6bb3de; font-weight: 700; font-size: 0.78rem; cursor: pointer; }
+.link-btn.danger { color: #c0335a; }
+.empty-state { text-align: center; padding: 2.5rem; color: #8fa8bc; }

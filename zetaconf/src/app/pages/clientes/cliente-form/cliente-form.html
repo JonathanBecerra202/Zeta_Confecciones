@@ -1,0 +1,112 @@
+<div class="modal-overlay" (click)="close.emit()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ initial ? 'Editar cliente' : 'Nuevo cliente' }}</h2>
+      <button class="close-btn" (click)="close.emit()">✕</button>
+    </div>
+
+    @if (errorMsg()) {
+      <p class="error-banner">{{ errorMsg() }}</p>
+    }
+
+    <div class="field-grid">
+      <div class="field">
+        <label class="zeta-label">Primer nombre *</label>
+        <input class="zeta-input" [ngModel]="firstName()" (ngModelChange)="firstName.set($event)" />
+      </div>
+      <div class="field">
+        <label class="zeta-label">Segundo nombre</label>
+        <input class="zeta-input" [ngModel]="middleName()" (ngModelChange)="middleName.set($event)" />
+      </div>
+      <div class="field">
+        <label class="zeta-label">Primer apellido *</label>
+        <input class="zeta-input" [ngModel]="lastName()" (ngModelChange)="lastName.set($event)" />
+      </div>
+      <div class="field">
+        <label class="zeta-label">Segundo apellido</label>
+        <input class="zeta-input" [ngModel]="secondLastName()" (ngModelChange)="secondLastName.set($event)" />
+      </div>
+    </div>
+
+    <div class="field full-width">
+      <label class="zeta-label">Teléfono</label>
+      <input class="zeta-input" [ngModel]="phone()" (ngModelChange)="phone.set($event)" placeholder="Solo números, 7-15 dígitos" />
+    </div>
+
+    <div class="field full-width">
+      <label class="zeta-label">Organización</label>
+      @if (!showNewOrg()) {
+        <div class="inline-row">
+          <select class="zeta-select" [ngModel]="selectedOrgId()" (ngModelChange)="onOrgChange($event)">
+            <option [ngValue]="null">Selecciona una organización</option>
+            @for (o of organizations; track o.organization_id) {
+              <option [ngValue]="o.organization_id">{{ o.name }}</option>
+            }
+          </select>
+          <button type="button" class="btn-secondary" (click)="showNewOrg.set(true)">+ Nueva</button>
+        </div>
+      } @else {
+        <div class="inline-row">
+          <input class="zeta-input" [ngModel]="newOrgName()" (ngModelChange)="newOrgName.set($event)" placeholder="Nombre de la nueva organización" />
+          <button type="button" class="btn-secondary" (click)="addOrganization()">Guardar</button>
+          <button type="button" class="btn-secondary" (click)="showNewOrg.set(false)">Cancelar</button>
+        </div>
+      }
+    </div>
+
+    <div class="field full-width">
+      <label class="zeta-label">Dependencia</label>
+      @if (!showNewDep()) {
+        <div class="inline-row">
+          <select class="zeta-select" [ngModel]="selectedDepId()" (ngModelChange)="selectedDepId.set($event)">
+            <option [ngValue]="null">Selecciona una dependencia</option>
+            @for (d of filteredDeps(); track d.department_id) {
+              <option [ngValue]="d.department_id">{{ d.name }}</option>
+            }
+          </select>
+          <button type="button" class="btn-secondary" (click)="showNewDep.set(true)" [disabled]="selectedOrgId() === null">+ Nueva</button>
+        </div>
+      } @else {
+        <div class="inline-row">
+          <input class="zeta-input" [ngModel]="newDepName()" (ngModelChange)="newDepName.set($event)" placeholder="Nombre de la nueva dependencia" />
+          <button type="button" class="btn-secondary" (click)="addDepartment()">Guardar</button>
+          <button type="button" class="btn-secondary" (click)="showNewDep.set(false)">Cancelar</button>
+        </div>
+      }
+    </div>
+
+    @if (!initial) {
+      <div class="measurements-toggle">
+        <button type="button" class="toggle-btn" (click)="showMeasurements.set(!showMeasurements())">
+          {{ showMeasurements() ? '▲' : '▼' }} Medidas (opcional)
+        </button>
+      </div>
+
+      @if (showMeasurements()) {
+        <div class="measurements-panel">
+          <div class="field-grid">
+            @for (f of measurementFields; track f.key) {
+              <div class="field">
+                <label class="zeta-label">{{ f.label }} (cm)</label>
+                <input class="zeta-input" type="number" min="0" step="0.01"
+                  [ngModel]="measurementValues()[f.key] ?? ''" (ngModelChange)="setMeasurementValue(f.key, $event)" />
+              </div>
+            }
+          </div>
+
+          <div class="field full-width">
+            <label class="zeta-label">Observaciones de medidas</label>
+            <textarea class="zeta-input" rows="2" [ngModel]="measurementNotes()" (ngModelChange)="measurementNotes.set($event)"></textarea>
+          </div>
+        </div>
+      }
+    }
+
+    <div class="modal-actions">
+      <button type="button" class="btn-secondary" (click)="close.emit()">Cancelar</button>
+      <button type="button" class="btn-primary" (click)="onSubmit()" [disabled]="saving()">
+        {{ saving() ? 'Guardando...' : 'Guardar cliente' }}
+      </button>
+    </div>
+  </div>
+</div>

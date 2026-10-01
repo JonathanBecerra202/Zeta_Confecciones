@@ -1,0 +1,159 @@
+.clientes-page {
+  font-family: 'Nunito', sans-serif;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.page-header h1 {
+  color: #26425e;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.result-count {
+  color: #8fa8bc;
+  font-size: 0.8rem;
+}
+
+.error-banner {
+  background: #fce8ef;
+  color: #c0335a;
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.search-box {
+  margin-bottom: 0.5rem;
+}
+
+.zeta-input, .zeta-select {
+  background: #ffffff;
+  border: 1.5px solid #bfe0f2;
+  border-radius: 10px;
+  padding: 0.42rem 0.85rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.875rem;
+  color: #4a5a68;
+  width: 100%;
+  outline: none;
+}
+
+.zeta-input:focus, .zeta-select:focus {
+  border-color: #6bb3de;
+  box-shadow: 0 0 0 3px rgba(107,179,222,0.15);
+}
+
+.filters-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filters-row .zeta-select {
+  flex: 1;
+  min-width: 140px;
+}
+
+.toolbar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #8fa8bc;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #6bb3de;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.38rem 1rem;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #4f9fd8;
+}
+
+.loading-text {
+  color: #8fa8bc;
+  text-align: center;
+  padding: 2rem;
+}
+
+.client-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.client-card {
+  background: #eaf6fd;
+  border: 1.5px solid #bfe0f2;
+  border-radius: 14px;
+  padding: 0.6rem 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+}
+
+.client-card:hover {
+  box-shadow: 0 4px 16px rgba(107,179,222,0.18);
+}
+
+.client-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.client-name {
+  color: #26425e;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.badge {
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  text-transform: uppercase;
+}
+
+.badge-inactive {
+  background: #eee;
+  color: #999;
+}
+
+.client-phone, .client-org {
+  color: #8fa8bc;
+  font-size: 0.75rem;
+  margin-top: 0.15rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2.5rem;
+  color: #8fa8bc;
+}

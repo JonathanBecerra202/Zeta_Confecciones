@@ -1,0 +1,29 @@
+<div class="modal-overlay" (click)="close.emit()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ initial ? 'Editar dependencia' : 'Nueva dependencia' }}</h2>
+      <button class="close-btn" (click)="close.emit()">✕</button>
+    </div>
+
+    @if (errorMsg()) {
+      <p class="error-banner">{{ errorMsg() }}</p>
+    }
+
+    <label class="zeta-label">Organización *</label>
+    <select class="zeta-select" [ngModel]="selectedOrgId()" (ngModelChange)="selectedOrgId.set($event)">
+      @for (o of organizations; track o.organization_id) {
+        <option [ngValue]="o.organization_id">{{ o.name }}</option>
+      }
+    </select>
+
+    <label class="zeta-label" style="margin-top:0.6rem;">Nombre *</label>
+    <input class="zeta-input" [ngModel]="name()" (ngModelChange)="name.set($event)" />
+
+    <div class="modal-actions">
+      <button type="button" class="btn-secondary" (click)="close.emit()">Cancelar</button>
+      <button type="button" class="btn-primary" (click)="onSubmit()" [disabled]="saving()">
+        {{ saving() ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </div>
+</div>

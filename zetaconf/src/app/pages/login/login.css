@@ -1,0 +1,84 @@
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5fbff;
+  font-family: 'Nunito', system-ui, sans-serif;
+}
+
+.login-box {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 16px 64px rgba(38,66,94,0.18);
+  padding: 2rem;
+  width: 100%;
+  max-width: 360px;
+}
+
+.login-box h1 {
+  color: #26425e;
+  font-family: 'Playfair Display', Georgia, serif;
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  color: #8fa8bc;
+  text-align: center;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #26425e;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.2rem;
+  margin-top: 0.8rem;
+}
+
+input {
+  width: 100%;
+  background: #ffffff;
+  border: 1.5px solid #bfe0f2;
+  border-radius: 10px;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.9rem;
+  color: #4a5a68;
+  outline: none;
+}
+
+input:focus {
+  border-color: #6bb3de;
+  box-shadow: 0 0 0 3px rgba(107,179,222,0.15);
+}
+
+.error {
+  color: #c0335a;
+  background: #fce8ef;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  margin-top: 1rem;
+}
+
+button {
+  width: 100%;
+  margin-top: 1.5rem;
+  background: #6bb3de;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-weight: 700;
+  padding: 0.6rem;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

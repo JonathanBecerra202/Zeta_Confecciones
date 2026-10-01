@@ -1,0 +1,105 @@
+<div class="clientes-page">
+  <div class="page-header">
+    <h1>Clientes</h1>
+    <span class="result-count">{{ filtered().length }} resultado{{ filtered().length !== 1 ? 's' : '' }}</span>
+  </div>
+
+  @if (errorMsg()) {
+    <p class="error-banner">{{ errorMsg() }}</p>
+  }
+
+  <div class="search-box">
+    <input
+      class="zeta-input"
+      placeholder="Buscar por nombre…"
+      [ngModel]="searchQuery()"
+      (ngModelChange)="searchQuery.set($event)"
+    />
+  </div>
+
+  <div class="filters-row">
+    <select
+      class="zeta-select"
+      [ngModel]="orgFilter()"
+      (ngModelChange)="orgFilter.set($event); depFilter.set(null)"
+    >
+      <option [ngValue]="null">Todas las organizaciones</option>
+      @for (o of organizations(); track o.organization_id) {
+        <option [ngValue]="o.organization_id">{{ o.name }}</option>
+      }
+    </select>
+
+    <select
+      class="zeta-select"
+      [ngModel]="depFilter()"
+      (ngModelChange)="depFilter.set($event)"
+    >
+      <option [ngValue]="null">Todas las dependencias</option>
+      @for (d of departmentsForOrg(orgFilter()); track d.department_id) {
+        <option [ngValue]="d.department_id">{{ d.name }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="toolbar-row">
+    <label class="checkbox-label">
+      <input
+        type="checkbox"
+        [ngModel]="showInactive()"
+        (ngModelChange)="showInactive.set($event)"
+      />
+      Mostrar inactivos
+    </label>
+    <button class="btn-primary" (click)="openNew()">+ Nuevo cliente</button>
+  </div>
+
+  @if (loading()) {
+    <p class="loading-text">Cargando clientes…</p>
+  } @else {
+    <div class="client-list">
+      @for (c of filtered(); track c.client_id) {
+        <button class="client-card" (click)="openDetail(c)">
+          <div class="client-info">
+            <div class="client-name-row">
+              <span class="client-name">{{ fullName(c) }}</span>
+              @if (!c.active) {
+                <span class="badge badge-inactive">Inactivo</span>
+              }
+            </div>
+            <div class="client-phone">{{ c.phone || 'Sin teléfono' }}</div>
+            <div class="client-org">{{ departmentOf(c)?.name }} · {{ organizationNameOf(c) }}</div>
+          </div>
+        </button>
+      }
+
+      @if (filtered().length === 0) {
+        <div class="empty-state">
+          <p>No se encontraron clientes</p>
+        </div>
+      }
+    </div>
+  }
+</div>
+
+@if (showForm()) {
+  <app-cliente-form
+    [organizations]="organizations()"
+    [departments]="departments()"
+    [initial]="editingClient()"
+    (close)="closeForm()"
+    (saved)="onSaved()"
+    (departmentCreated)="onDepartmentCreated()"
+    (organizationCreated)="onOrganizationCreated()"
+  />
+}
+
+@if (selectedClient()) {
+  <app-cliente-detail
+    [client]="selectedClient()!"
+    [department]="departmentOf(selectedClient()!)"
+    [organization]="organizations().find(o => o.organization_id === departmentOf(selectedClient()!)?.organization_id)"
+    (close)="closeDetail()"
+    (edit)="openEdit(selectedClient()!)"
+    (statusChanged)="loadAll()"
+  />
+}

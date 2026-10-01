@@ -1,0 +1,68 @@
+<div class="pedidos-page">
+  <div class="page-header">
+    <h1>Pedidos</h1>
+    <span class="result-count">{{ filtered().length }} resultado{{ filtered().length !== 1 ? 's' : '' }}</span>
+  </div>
+
+  @if (errorMsg()) {
+    <p class="error-banner">{{ errorMsg() }}</p>
+  }
+
+  <div class="search-box">
+    <input class="zeta-input" placeholder="Buscar por cliente o descripción…"
+      [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)" />
+  </div>
+
+  <div class="filter-chips">
+    @for (s of statuses; track s) {
+      <button class="chip" [class.active]="statusFilter() === s" (click)="statusFilter.set(s)">
+        {{ s === 'Todos' ? 'Todos' : statusLabels[s] }}
+      </button>
+    }
+  </div>
+
+  @if (loading()) {
+    <p class="loading-text">Cargando pedidos…</p>
+  } @else {
+    <div class="order-list">
+      @for (o of filtered(); track o.garment_order_id) {
+        <div class="order-card">
+          <div class="order-top">
+            <span class="order-client">{{ clientName(o.client_id) }}</span>
+          </div>
+          <div class="order-desc">{{ o.description }}</div>
+
+          <div class="status-row">
+            <span class="status-group">
+              <span class="status-caption">Estado del pedido</span>
+              <span class="badge" [class]="'badge-status-' + o.status">{{ statusLabels[o.status] }}</span>
+            </span>
+            <span class="status-group">
+              <span class="status-caption">Estado del pago</span>
+              <span class="badge" [class]="'badge-payment-' + o.payment_status">{{ paymentStatusLabels[o.payment_status] }}</span>
+            </span>
+          </div>
+
+          <div class="order-numbers">
+            <span>Total <strong>{{ o.total_price | number:'1.0-0' }}</strong></span>
+            <span>Pagado <strong>{{ o.amount_paid | number:'1.0-0' }}</strong></span>
+            <span>Pendiente <strong [class.pending-amount]="saldoOf(o) > 0">{{ saldoOf(o) | number:'1.0-0' }}</strong></span>
+          </div>
+          <div class="order-delivery">
+            @if (o.delivery_date) {
+              Entrega: {{ o.delivery_date | date:'d \'de\' MMMM \'de\' y' }}
+            } @else {
+              Sin fecha de entrega definida
+            }
+          </div>
+        </div>
+      }
+
+      @if (filtered().length === 0) {
+        <div class="empty-state">
+          <p>No se encontraron pedidos</p>
+        </div>
+      }
+    </div>
+  }
+</div>

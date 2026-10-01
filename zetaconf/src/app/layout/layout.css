@@ -1,0 +1,111 @@
+.app-shell {
+  min-height: 100vh;
+  background: #f5fbff;
+  font-family: 'Nunito', system-ui, sans-serif;
+}
+
+.app-header {
+  background: #ffffff;
+  border-bottom: 1.5px solid #bfe0f2;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  height: 56px;
+}
+
+.logo {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: #26425e;
+  font-weight: 700;
+  font-size: 1.05rem;
+  white-space: nowrap;
+}
+
+.logo-accent {
+  color: #6bb3de;
+}
+
+.nav-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex: 1;
+  overflow-x: auto;
+}
+
+.nav-tab {
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: #8fa8bc;
+  padding: 0.32rem 0.85rem;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: all 0.18s;
+}
+
+.nav-tab:hover {
+  color: #4a5a68;
+  background: #eaf6fd;
+}
+
+.nav-tab.active {
+  color: #e0507a;
+  background: #fce8ef;
+  font-weight: 700;
+}
+
+.user-box {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  white-space: nowrap;
+}
+
+.user-name {
+  color: #26425e;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.user-role {
+  color: #6bb3de;
+  background: #eaf6fd;
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.logout-btn {
+  background: transparent;
+  color: #6bb3de;
+  border: 1.5px solid #bfe0f2;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #eaf6fd;
+  border-color: #6bb3de;
+}
+
+.app-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.2rem 1rem;
+}
